@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>浪漫土耳其 · 四人旅游攻略</title>
+<meta name="description" content="可编辑、可分享的旅行行程页">
+<meta name="theme-color" content="#7e3f98">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <h1 id="heroTitle" data-edit="meta.title"></h1>
+    <p id="heroSub" data-edit="meta.subtitle"></p>
+    <div class="actions">
+      <button id="btnEdit">编辑内容</button>
+      <button id="btnShare">生成分享链接</button>
+      <button id="btnExport">导出安排</button>
+      <label>导入安排<input id="btnImport" type="file" accept="application/json" hidden></label>
+      <button id="btnSettings">页面设置</button>
+    </div>
+  </header>
+
+  <section class="stats">
+    <div class="stat"><small>人数</small><b id="statPeople">4人</b></div>
+    <div class="stat"><small>汇率</small><b id="statRates">€1≈₺56 / ¥7.7</b></div>
+    <div class="stat"><small>汇率刷新</small><b><button id="btnRate" class="btn gray">刷新</button></b></div>
+    <div class="stat"><small>保存状态</small><b><span id="syncDot" class="sync-dot"></span><span id="syncText">已存本机</span></b></div>
+  </section>
+
+  <div id="map"></div>
+  <div class="toolbar"><div id="tabs" class="tabs"></div></div>
+  <main id="content" class="content"></main>
+</div>
+
+<div id="sheet" class="sheet">
+  <div class="sheet-card">
+    <div class="sheet-head">
+      <h3 id="sheetTitle">编辑</h3>
+      <button data-act="closeSheet">关闭</button>
+    </div>
+    <div id="sheetBody"></div>
+    <div class="sheet-actions" id="sheetActions"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="vendor/leaflet.js"></script>
+<script src="vendor/lz-string.min.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
