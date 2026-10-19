@@ -27,6 +27,9 @@ a{color:inherit}
 .stat{padding:12px;min-width:0}
 .stat small{color:var(--muted);font-size:12px}
 .stat b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#statPeople{cursor:text;border-bottom:1px dashed #d8c7e0;padding:0 3px;border-radius:3px}
+#statPeople:hover{background:#f7eefb}
+#statPeople:focus{outline:0;background:#fffdf3;box-shadow:inset 0 0 0 1px #e8c877;border-bottom-color:transparent}
 .sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-right:5px;vertical-align:1px}
 .sync-dot.off{background:#cbd5e1}
 .sync-dot.busy{background:var(--warn)}
