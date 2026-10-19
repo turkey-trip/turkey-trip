@@ -887,6 +887,17 @@
     if (!state.data.meta.baseCurrency) state.data.meta.baseCurrency = 'EUR';
     if (!state.data.meta.targets || !state.data.meta.targets.length) state.data.meta.targets = ['TRY', 'CNY'];
 
+    // 老数据没有币种字段：补成欧元，避免切换本币后历史金额被误读
+    var migrated = false;
+    state.data.days.forEach(function (day) {
+      Object.keys(day.opts).forEach(function (k) {
+        day.opts[k].forEach(function (it) {
+          if (!it.currency && it.cost != null && it.cost !== '') { it.currency = 'EUR'; migrated = true; }
+        });
+      });
+    });
+    if (migrated) { try { localStorage.setItem(LS_KEY, JSON.stringify(state.data)); } catch (e) { } }
+
     document.title = state.data.meta.title || '旅游攻略';
     $('#heroTitle').textContent = state.data.meta.title || '';
     $('#heroSub').textContent = state.data.meta.subtitle || '';
