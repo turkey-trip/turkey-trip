@@ -5,7 +5,9 @@ window.SEED = {
     title: '浪漫土耳其 · 四人旅游攻略',
     subtitle: '2026/09/26—10/03 · 伊斯坦布尔 → 费特希耶 → D400/卡什 → 安塔利亚 → 卡帕多奇亚',
     people: 4,
-    rates: { try: 56, cny: 7.7 }
+    baseCurrency: 'EUR',
+    targets: ['TRY', 'CNY'],
+    rates: { try: 56, cny: 7.7, usd: 1.08 }
   },
   days: [
     {
