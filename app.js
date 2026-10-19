@@ -124,12 +124,38 @@
       return Object.assign({}, x, { begin: clk(s), end: clk(e) });
     });
   }
-  function price(v) {
+  var CUR = {
+    EUR: { sym: '€', name: '欧元' },
+    TRY: { sym: '₺', name: '里拉' },
+    CNY: { sym: '¥', name: '人民币' },
+    USD: { sym: '$', name: '美元' }
+  };
+  var CUR_KEYS = ['EUR', 'TRY', 'CNY', 'USD'];
+
+  function rateMap() {
+    var r = state.data.meta.rates || {};
+    return { EUR: 1, TRY: r.try || 56, CNY: r.cny || 7.7, USD: r.usd || 1.08 };
+  }
+  function convert(v, from, to) {
+    var m = rateMap();
+    if (!m[from] || !m[to]) return null;
+    return v / m[from] * m[to];
+  }
+  function curSym(c) { return (CUR[c] || CUR.EUR).sym; }
+  function price(v, cur) {
     if (v == null || v === '') return '';
     var n = +v;
     if (n === 0) return '免费';
-    var r = state.data.meta.rates || { try: 56, cny: 7.7 };
-    return '€' + n + ' / ₺' + Math.round(n * r.try) + ' / ¥' + Math.round(n * r.cny);
+    cur = cur || 'EUR';
+    var show = ['TRY', 'CNY'];
+    if (show.indexOf(cur) < 0) show.unshift(cur);
+    var parts = [curSym(cur) + n];
+    show.forEach(function (c) {
+      if (c === cur) return;
+      var x = convert(n, cur, c);
+      if (x != null) parts.push(curSym(c) + Math.round(x));
+    });
+    return parts.join(' / ');
   }
   function typeName(t) { return ({ spot: '景点', food: '餐饮', hotel: '住宿', transport: '交通' })[t] || '景点'; }
 
@@ -186,8 +212,9 @@
   /* ---------------- 渲染 ---------------- */
   function renderStats() {
     var m = state.data.meta;
+    var rt = m.rates || {};
     $('#statPeople').textContent = (m.people || 4) + '人';
-    $('#statRates').textContent = '€1≈₺' + Math.round(m.rates.try) + ' / ¥' + m.rates.cny;
+    $('#statRates').textContent = '€1≈₺' + Math.round(rt.try || 56) + ' / ¥' + (rt.cny || 7.7) + ' / $' + (rt.usd || 1.08);
     $('#heroTitle').textContent = m.title || '';
     $('#heroSub').textContent = m.subtitle || '';
   }
@@ -360,7 +387,8 @@
 
     var chips = el('div', 'chips');
     if (x.cost != null && x.cost !== '') {
-      var ch = el('span', 'chip price', price(x.cost) + (x.unit ? ' · ' + x.unit : ''));
+      var unitTxt = String(x.unit || '').replace(/[€₺¥$]/g, '').trim();
+      var ch = el('span', 'chip price', price(x.cost, x.currency) + (unitTxt ? ' · ' + unitTxt : ''));
       chips.appendChild(ch);
     }
     chips.appendChild(el('span', 'chip', typeName(x.type)));
@@ -527,9 +555,10 @@
         ] }
       ] },
       { type: 'group', fields: [
-        { key: 'cost', label: '费用（欧元，0=免费）', type: 'number', value: x.cost == null ? '' : x.cost, min: 0 },
-        { key: 'unit', label: '费用单位', value: x.unit || '' }
+        { key: 'cost', label: '费用（0 表示免费）', type: 'number', value: x.cost == null ? '' : x.cost, min: 0 },
+        { key: 'currency', label: '币种', type: 'select', value: x.currency || 'EUR', options: CUR_KEYS.map(function (k) { return { value: k, text: CUR[k].sym + ' ' + CUR[k].name }; }) }
       ] },
+      { key: 'unit', label: '费用单位（如：每人预算 / 全车预算）', value: String(x.unit || '').replace(/[€₺¥$]/g, '').trim() },
       { key: 'desc', label: '说明', type: 'textarea', value: x.desc || '' },
       { type: 'group', fields: [
         { key: 'lat', label: '纬度', type: 'number', step: '0.000001', value: x.lat == null ? '' : x.lat },
@@ -550,6 +579,7 @@
             lat: v.lat === '' ? '' : +v.lat,
             lng: v.lng === '' ? '' : +v.lng,
             cost: v.cost === '' ? null : +v.cost,
+            currency: v.currency || 'EUR',
             unit: v.unit || '',
             desc: v.desc || '',
             fixed: x.fixed ? 1 : 0
@@ -607,11 +637,12 @@
     openSheet('页面设置', [
       { key: 'title', label: '大标题', value: m.title || '' },
       { key: 'subtitle', label: '副标题（日期与路线）', value: m.subtitle || '' },
+      { key: 'people', label: '人数', type: 'number', value: m.people || 4, min: 1 },
       { type: 'group', fields: [
-        { key: 'people', label: '人数', type: 'number', value: m.people || 4, min: 1 },
-        { key: 'rateTry', label: '汇率 €1 = ? ₺', type: 'number', step: '0.01', value: m.rates.try }
+        { key: 'rateTry', label: '汇率 €1 = ? ₺', type: 'number', step: '0.01', value: m.rates.try },
+        { key: 'rateCny', label: '汇率 €1 = ? ¥', type: 'number', step: '0.01', value: m.rates.cny }
       ] },
-      { key: 'rateCny', label: '汇率 €1 = ? ¥', type: 'number', step: '0.01', value: m.rates.cny }
+      { key: 'rateUsd', label: '汇率 €1 = ? $', type: 'number', step: '0.01', value: m.rates.usd || 1.08 }
     ], [
       {
         text: '恢复默认', kind: 'danger', onClick: function () {
@@ -630,7 +661,7 @@
           m.title = v.title.trim() || m.title;
           m.subtitle = v.subtitle;
           m.people = +v.people || 4;
-          m.rates = { try: +v.rateTry || 56, cny: +v.rateCny || 7.7 };
+          m.rates = { try: +v.rateTry || 56, cny: +v.rateCny || 7.7, usd: +v.rateUsd || 1.08 };
           document.title = m.title;
           $('#heroTitle').textContent = m.title;
           $('#heroSub').textContent = m.subtitle;
@@ -705,11 +736,11 @@
 
   function refreshRates() {
     setSync('获取汇率…', 'busy');
-    fetch('https://api.frankfurter.app/latest?from=EUR&to=TRY,CNY')
+    fetch('https://api.frankfurter.app/latest?from=EUR&to=TRY,CNY,USD')
       .then(function (r) { return r.json(); })
       .then(function (r) {
         if (!r || !r.rates) throw new Error('bad');
-        state.data.meta.rates = { try: r.rates.TRY, cny: r.rates.CNY };
+        state.data.meta.rates = { try: r.rates.TRY, cny: r.rates.CNY, usd: r.rates.USD || 1.08 };
         save(); render();
         toast('汇率已更新');
       })
@@ -826,7 +857,8 @@
   function boot() {
     state.data = loadDoc();
     if (!state.data.meta) state.data.meta = clone(window.SEED.meta);
-    if (!state.data.meta.rates) state.data.meta.rates = { try: 56, cny: 7.7 };
+    if (!state.data.meta.rates) state.data.meta.rates = { try: 56, cny: 7.7, usd: 1.08 };
+    if (!state.data.meta.rates.usd) state.data.meta.rates.usd = 1.08;
 
     document.title = state.data.meta.title || '旅游攻略';
     $('#heroTitle').textContent = state.data.meta.title || '';
