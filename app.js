@@ -223,14 +223,14 @@
   /* ---------------- 渲染 ---------------- */
   function renderStats() {
     var m = state.data.meta;
-    $('#statPeople').textContent = (m.people || 4) + '人';
+    $('#statPeople').textContent = String(m.people || 4);
     var b = baseCur();
-    var line = [curSym(b) + '1'];
+    var parts = [];
     targets().forEach(function (c) {
       if (!c || c === b) return;
-      line.push(curSym(c) + fmtRate(convert(1, b, c)));
+      parts.push(curSym(c) + fmtRate(convert(1, b, c)));
     });
-    $('#statRates').textContent = line.join(' ≈ ');
+    $('#statRates').textContent = curSym(b) + '1 ≈ ' + (parts.length ? parts.join(' / ') : '同本币');
     $('#heroTitle').textContent = m.title || '';
     $('#heroSub').textContent = m.subtitle || '';
   }
@@ -455,7 +455,8 @@
   /* ---------------- 可编辑文本 ---------------- */
   function applyEditable() {
     document.querySelectorAll('[data-edit]').forEach(function (n) {
-      if (state.editing) {
+      var always = n.id === 'statPeople';
+      if (state.editing || always) {
         if (!n.hasAttribute('contenteditable')) n.setAttribute('contenteditable', 'true');
       } else if (n.hasAttribute('contenteditable')) {
         n.removeAttribute('contenteditable');
@@ -470,6 +471,12 @@
     var d = state.data;
     if (key === 'meta.title') { d.meta.title = val; $('#heroTitle').textContent = val; document.title = val; }
     else if (key === 'meta.subtitle') { d.meta.subtitle = val; $('#heroSub').textContent = val; }
+    else if (key === 'meta.people') {
+      var n = parseInt(val, 10);
+      if (!n || n < 1) { node.textContent = String(d.meta.people || 4); return; }
+      d.meta.people = n;
+      node.textContent = String(n);
+    }
     else if (key.indexOf('day.') === 0) {
       var day = currentDay();
       if (!day) return;
