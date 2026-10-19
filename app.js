@@ -523,8 +523,13 @@
       acts.appendChild(b);
     });
     $('#sheet').classList.add('show');
+    document.body.classList.add('sheet-open');
   }
-  function closeSheet() { $('#sheet').classList.remove('show'); sheetCtx = null; }
+  function closeSheet() {
+    $('#sheet').classList.remove('show');
+    document.body.classList.remove('sheet-open');
+    sheetCtx = null;
+  }
 
   function fieldNode(f) {
     var wrap = el('div', 'field');
