@@ -1,173 +1,190 @@
 /* 初始行程数据（首次打开、或点“恢复默认”时使用；页面上的修改会存到共享库） */
 window.SEED = {
-  version: 1,
+  version: 2,
   meta: {
-    title: '浪漫土耳其 · 四人旅游攻略',
-    subtitle: '2026/09/26—10/03 · 伊斯坦布尔 → 费特希耶 → D400/卡什 → 安塔利亚 → 卡帕多奇亚',
+    title: '韩国慢游 · 四人旅游攻略',
+    subtitle: '2026/09/26—10/03 · 首尔 → 江陵 → 庆州 → 釜山',
     people: 4,
-    baseCurrency: 'EUR',
-    targets: ['TRY', 'CNY'],
-    rates: { try: 56, cny: 7.7, usd: 1.08 }
+    baseCurrency: 'KRW',
+    targets: ['CNY'],
+    rates: { KRW: 1, CNY: 196, USD: 1395, EUR: 1520 }
   },
   days: [
     {
-      id: 'd1', tab: '9/26', date: '9月26日 周六', start: 630,
-      title: '伊斯坦布尔｜大巴扎＋新城区＋日落游船',
-      route: 'IST → 酒店寄存 → 大巴扎 → 塔克西姆 → 独立大街 → 加拉塔 → 码头',
-      note: '大巴扎放在周六；游船班次以当天码头公告为准。',
+      id: 'd1', tab: '9/26', date: '9月26日 周六', start: 690,
+      title: '首尔｜抵达＋明洞＋南山塔',
+      route: '仁川T1 → 机场快线 → 首尔站 → 明洞酒店 → 南山缆车 → N首尔塔 → 明洞',
+      note: '落地先买 T-money 卡并换少量现金；机场快线直达列车 43 分钟，比普通列车快但贵一点。',
       opts: {
         '主方案': [
-          { name: 'IST抵达（CA859：预计07:15／计划08:00）→酒店', time: '08:00', dur: 90, travel: 0, type: 'transport', lat: 41.275, lng: 28.752, cost: 60, unit: '全车预算€', fixed: 1, desc: '北京T3 02:00出发；订单截图显示预计抵达07:15、计划抵达08:00，按当天航空公司信息和机场实际为准。' },
-          { name: '酒店寄存行李', time: '10:30', dur: 30, travel: 10, type: 'hotel', lat: 41.009253, lng: 28.949279, fixed: 1, desc: '先寄存，不等正式入住。' },
-          { name: '大巴扎', time: '11:00', dur: 90, travel: 15, type: 'spot', lat: 41.011, lng: 28.968, cost: 0, desc: '室内集市，免费；适合逛灯具、香料和纪念品。' },
-          { name: '午餐', time: '12:45', dur: 60, travel: 10, type: 'food', lat: 41.011, lng: 28.967, desc: '在大巴扎外沿解决，避免为网红店排长队。' },
-          { name: '塔克西姆广场', time: '14:00', dur: 45, travel: 30, type: 'spot', lat: 41.037, lng: 28.985, cost: 0, desc: '现代伊斯坦布尔城市广场，免费。' },
-          { name: '独立大街', time: '14:45', dur: 90, travel: 5, type: 'spot', lat: 41.034, lng: 28.978, cost: 0, desc: '红色电车、街店和咖啡馆。' },
-          { name: '加拉塔塔外观', time: '16:20', dur: 40, travel: 10, type: 'spot', lat: 41.026, lng: 28.974, cost: 0, desc: '只拍外观，不登顶。' },
-          { name: '两小时日落博斯普鲁斯游船', time: '17:15', dur: 120, travel: 15, type: 'transport', lat: 41.026, lng: 28.974, cost: 34, unit: '每人预算€', desc: '选择返回同一码头的日落船。' },
-          { name: '加拉塔桥拍照＋晚餐', time: '19:30', dur: 90, travel: 10, type: 'food', lat: 41.017, lng: 28.971, desc: '看金角湾、渔船和老城剪影。' },
-          { name: '返回酒店', time: '21:10', dur: 35, travel: 0, type: 'hotel', lat: 41.009253, lng: 28.949279, fixed: 1, desc: '回酒店休息。' }
+          { name: '仁川T1 抵达（北京首都T3 直飞）', time: '11:30', dur: 75, travel: 10, type: 'transport', lat: 37.4602, lng: 126.4407, fixed: 1, desc: '入境+取行李预留 1 小时以上；提前在飞机上填好入境卡。' },
+          { name: '机场快线 AREX → 首尔站', time: '13:00', dur: 45, travel: 10, type: 'transport', lat: 37.5547, lng: 126.9707, cost: 9500, unit: '每人预算', fixed: 1, desc: '直达列车不停站；出站换 4 号线两站到明洞。' },
+          { name: '明洞酒店寄存行李', time: '14:00', dur: 30, travel: 10, type: 'hotel', lat: 37.5636, lng: 126.9834, fixed: 1, desc: '先寄存，16:00 后再回来正式入住。' },
+          { name: '明洞午餐（炸鸡／部队锅）', time: '14:45', dur: 60, travel: 10, type: 'food', lat: 37.563, lng: 126.985, cost: 15000, unit: '每人预算', desc: '避开网红排队店，明洞支路里的小店性价比更高。' },
+          { name: '南山缆车＋N首尔塔', time: '16:00', dur: 150, travel: 15, type: 'spot', lat: 37.5512, lng: 126.9882, cost: 36000, unit: '每人预算', desc: '缆车往返 ₩15,000＋观景台 ₩21,000；选日落前上去，能同时拍白天和夜景。' },
+          { name: '明洞夜市＋免税店', time: '18:45', dur: 120, travel: 15, type: 'food', lat: 37.5636, lng: 126.9834, cost: 20000, unit: '每人预算', desc: '街头小吃为主；免税店记得带护照，取货在机场。' },
+          { name: '返回酒店', time: '21:00', dur: 20, travel: 0, type: 'hotel', lat: 37.5636, lng: 126.9834, fixed: 1, desc: '回酒店休息，调整时差（韩国比北京快 1 小时）。' }
         ]
       }
     },
     {
-      id: 'd2', tab: '9/27', date: '9月27日 周日', start: 450,
-      title: '伊斯坦布尔｜蓝色清真寺＋圣索菲亚可选＋SAW',
-      route: '酒店 → 蓝色清真寺 → 圣索菲亚 → 取行李 → SAW',
-      note: '蓝色清真寺为活跃清真寺；上午参观，避开午间礼拜。',
+      id: 'd2', tab: '9/27', date: '9月27日 周日', start: 480,
+      title: '首尔｜景福宫＋北村＋广藏市场',
+      route: '酒店 → 景福宫 → 光化门 → 北村韩屋村 → 三清洞 → 仁寺洞 → 广藏市场 → 清溪川 → DDP',
+      note: '景福宫每周二休宫；想免门票可以租韩服（约 ₩15,000/2 小时）。北村是居民区，11:00—17:00 才开放参观。',
       opts: {
         '主方案': [
-          { name: '早餐＋退房寄存', time: '07:30', dur: 60, travel: 0, type: 'hotel', lat: 41.009253, lng: 28.949279, fixed: 1, desc: '行李寄存在酒店。' },
-          { name: '蓝色清真寺', time: '08:30', dur: 50, travel: 10, type: 'spot', lat: 41.005, lng: 28.977, cost: 0, desc: '免费；注意服装、脱鞋和礼拜暂停。' },
-          { name: '圣索菲亚（排队短才入内）', time: '09:30', dur: 70, travel: 10, type: 'spot', lat: 41.009, lng: 28.98, cost: 25, unit: '每人预算€', desc: '排队超过30分钟就只看外观。' },
-          { name: '竞技场广场＋德国喷泉', time: '10:50', dur: 35, travel: 5, type: 'spot', lat: 41.006, lng: 28.976, cost: 0, desc: '蓝色清真寺旁的古罗马赛马场遗址，免费。' },
-          { name: '取行李＋午餐', time: '11:40', dur: 100, travel: 15, type: 'food', lat: 41.009253, lng: 28.949279, fixed: 1, desc: '不再加入托普卡帕宫。' },
-          { name: '前往SAW机场', time: '13:45', dur: 120, travel: 0, type: 'transport', lat: 40.899, lng: 29.309, cost: 60, unit: '全车预算€', fixed: 1, desc: '推荐预约接送/出租车。' },
-          { name: 'VF3126｜SAW→达拉曼', time: '19:35', dur: 80, travel: 0, type: 'transport', lat: 40.899, lng: 29.309, fixed: 1, desc: '订单显示计划抵达20:55；以航空公司当天信息为准。' },
-          { name: '达拉曼机场→酒店', time: '20:55', dur: 90, travel: 0, type: 'hotel', lat: 36.54933, lng: 29.115, fixed: 1, desc: '预约接送到费特希耶/厄吕代尼兹住宿。' }
+          { name: '酒店早餐＋出发', time: '08:00', dur: 60, travel: 10, type: 'hotel', lat: 37.5636, lng: 126.9834, fixed: 1, desc: '地铁 3 号线到景福宫站 5 号出口。' },
+          { name: '景福宫＋守门将换岗', time: '09:15', dur: 90, travel: 15, type: 'spot', lat: 37.5796, lng: 126.977, cost: 3000, unit: '每人预算', desc: '换岗仪式 10:00／14:00 各一场，先看仪式再进宫。' },
+          { name: '光化门广场＋世宗大王像', time: '11:00', dur: 30, travel: 5, type: 'spot', lat: 37.572, lng: 126.9769, cost: 0, desc: '免费；广场上有世宗大王和李舜臣将军像。' },
+          { name: '北村韩屋村', time: '11:40', dur: 70, travel: 15, type: 'spot', lat: 37.5826, lng: 126.983, cost: 0, desc: '免费；沿主巷走一圈就够，别进民居院子，保持安静。' },
+          { name: '三清洞午餐', time: '13:05', dur: 75, travel: 10, type: 'food', lat: 37.5837, lng: 126.9816, cost: 18000, unit: '每人预算', desc: '拌饭、刀削面、饺子都有，避开 12:00—13:00 高峰。' },
+          { name: '仁寺洞＋Ssamziegil', time: '14:30', dur: 80, travel: 15, type: 'spot', lat: 37.5744, lng: 126.9856, cost: 0, desc: '文创小店和传统茶屋，适合买伴手礼。' },
+          { name: '广藏市场小吃巡礼', time: '16:05', dur: 110, travel: 15, type: 'food', lat: 37.57, lng: 126.9996, cost: 15000, unit: '每人预算', desc: '绿豆煎饼、生牛肉、麻药紫菜包饭；现金更方便。' },
+          { name: '清溪川夜景散步', time: '18:10', dur: 45, travel: 10, type: 'spot', lat: 37.5696, lng: 126.9784, cost: 0, desc: '免费；晚上灯光好看，沿溪往西走一段再回地铁。' },
+          { name: '东大门 DDP 夜景', time: '19:05', dur: 60, travel: 25, type: 'spot', lat: 37.5665, lng: 127.0092, cost: 0, desc: '免费；扎哈设计的曲面建筑，夜里灯光最好看。' },
+          { name: '返回酒店', time: '20:30', dur: 20, travel: 0, type: 'hotel', lat: 37.5636, lng: 126.9834, fixed: 1, desc: '地铁 4 号线回明洞。' }
         ]
       }
     },
     {
-      id: 'd3', tab: '9/28', date: '9月28日 周一', start: 510,
-      title: '费特希耶｜12岛跳岛游',
-      route: '酒店 → 费特希耶港 → 4—5个海湾停留 → 港口 → 酒店',
-      note: '这天不塞其他陆地景点，重点是下海、船上午餐和休息。',
+      id: 'd3', tab: '9/28', date: '9月28日 周一', start: 540,
+      title: '首尔｜弘大＋延南洞＋汉江日落',
+      route: '酒店 → 弘大 → 延南洞 → 望远洞咖啡 → 汝矣岛汉江公园 → 汉江日落 → 首尔站',
+      note: '这天节奏放慢，重点是走路和吃；汉江公园可以现场租野餐垫和自行车。',
       opts: {
         '主方案': [
-          { name: '前往费特希耶港', time: '09:15', dur: 75, travel: 0, type: 'transport', lat: 36.621, lng: 29.115, cost: 30, unit: '每人预算€', fixed: 1, desc: '选择含酒店接送的船票。' },
-          { name: '12岛跳岛游', time: '10:30', dur: 420, travel: 0, type: 'transport', lat: 36.621, lng: 29.115, cost: 30, unit: '每人预算€', desc: '常见停靠：Yassıca、Tersane、Rabbit、Red Island、Aquarium Bay；通常船上午餐。' },
-          { name: '回酒店＋晚餐', time: '17:30', dur: 120, travel: 0, type: 'food', lat: 36.54933, lng: 29.115, desc: '回酒店洗澡休息，再在海边吃晚餐。' }
+          { name: '早餐＋出发', time: '09:00', dur: 60, travel: 20, type: 'food', lat: 37.5636, lng: 126.9834, cost: 8000, unit: '每人预算', desc: '地铁 2 号线到弘大入口站。' },
+          { name: '弘大商圈', time: '10:00', dur: 90, travel: 30, type: 'spot', lat: 37.5572, lng: 126.9245, cost: 0, desc: '免费；街头表演多在下午，小店 11:00 后才陆续开门。' },
+          { name: '延南洞午餐＋京义线林荫道', time: '12:00', dur: 90, travel: 10, type: 'food', lat: 37.5623, lng: 126.925, cost: 16000, unit: '每人预算', desc: '咖啡街＋小餐馆集中，周末人多，工作日更好逛。' },
+          { name: '望远洞咖啡休息', time: '13:40', dur: 45, travel: 20, type: 'food', lat: 37.5565, lng: 126.9103, cost: 9000, unit: '每人预算', desc: '本地人常去的咖啡馆区，比弘大安静。' },
+          { name: '汝矣岛汉江公园', time: '14:45', dur: 90, travel: 20, type: 'spot', lat: 37.5284, lng: 126.933, cost: 0, desc: '免费；租野餐垫约 ₩5,000，自行车按小时计费。' },
+          { name: '汉江日落＋炸鸡啤酒', time: '16:35', dur: 120, travel: 15, type: 'food', lat: 37.5284, lng: 126.933, cost: 22000, unit: '每人预算', desc: '日落后风大，带一件外套；外卖可以用现场点餐机。' },
+          { name: '首尔站乐天超市采购', time: '18:50', dur: 60, travel: 20, type: 'food', lat: 37.5547, lng: 126.9707, cost: 30000, unit: '每人预算', desc: '买伴手礼和海苔零食；明天一早坐 KTX，今晚就把行李收好。' },
+          { name: '返回酒店', time: '20:10', dur: 20, travel: 0, type: 'hotel', lat: 37.5636, lng: 126.9834, fixed: 1, desc: '早点休息，明天 08:20 的车。' }
         ]
       }
     },
     {
-      id: 'd4', tab: '9/29', date: '9月29日 周二', start: 450,
-      title: 'D400｜费特希耶→卡什→安塔利亚',
-      route: '酒店 → 卡尔坎 → 卡普塔什 → 卡什 → 德姆雷/芬尼凯 → 安塔利亚',
-      note: '建议7座商务车；不再临时加入萨克利肯特、帕塔拉或Kekova。',
+      id: 'd4', tab: '9/29', date: '9月29日 周二', start: 420,
+      title: '江陵｜KTX 东海线＋镜浦＋安木咖啡街',
+      route: '首尔站 → 江陵站 → 镜浦台 → 注文津 → 安木海边咖啡街 → 江陵中央市场 → 酒店',
+      note: 'KTX 京江线约 2 小时，务必提前在 Korail 订票；江陵市内公交班次少，四人建议直接包车或租车一天。',
       opts: {
         '主方案': [
-          { name: '酒店出发＋商务车接人', time: '07:30', dur: 30, travel: 0, type: 'transport', lat: 36.54933, lng: 29.115, cost: 320, unit: '全车预算€', fixed: 1, desc: '确认停车、高速和等待费用。' },
-          { name: '卡尔坎短停', time: '10:30', dur: 35, travel: 150, type: 'spot', lat: 36.266, lng: 29.414, cost: 0, desc: '海边小镇，咖啡和拍照。' },
-          { name: '卡普塔什观景台', time: '11:20', dur: 35, travel: 15, type: 'spot', lat: 36.229, lng: 29.448, cost: 0, desc: '只拍照约30分钟；下海需增加约1小时。' },
-          { name: '卡什午餐＋港口＋古剧场', time: '12:10', dur: 120, travel: 30, type: 'food', lat: 36.201, lng: 29.638, desc: 'D400当天最重要的停留点。' },
-          { name: '德姆雷/芬尼凯休息', time: '16:00', dur: 30, travel: 145, type: 'spot', lat: 36.26, lng: 30.05, cost: 0, desc: '补水和休息，不临时进古城。' },
-          { name: '抵达安塔利亚酒店', time: '19:00', dur: 30, travel: 150, type: 'hotel', lat: 36.88439, lng: 30.7066, fixed: 1, desc: '入住后在卡莱伊奇晚餐。' }
+          { name: '早餐＋退房', time: '07:00', dur: 50, travel: 10, type: 'hotel', lat: 37.5636, lng: 126.9834, fixed: 1, desc: '行李全部带走，明洞的酒店今天退房。' },
+          { name: 'KTX 首尔站 → 江陵站', time: '08:20', dur: 130, travel: 20, type: 'transport', lat: 37.7645, lng: 128.9, cost: 27600, unit: '每人预算', fixed: 1, desc: '京江线 KTX，约 2 小时；车上补个觉。' },
+          { name: '江陵站寄存行李＋租车', time: '10:50', dur: 40, travel: 20, type: 'transport', lat: 37.7645, lng: 128.9, cost: 90000, unit: '全车预算', desc: '站内投币寄存柜；租车需国际驾照，包车则谈好 8 小时。' },
+          { name: '镜浦台＋镜浦海边', time: '11:50', dur: 70, travel: 25, type: 'spot', lat: 37.7955, lng: 128.896, cost: 0, desc: '免费；湖与海之间一条松林路，拍照很快。' },
+          { name: '注文津海边午餐', time: '13:25', dur: 90, travel: 30, type: 'food', lat: 37.892, lng: 128.825, cost: 20000, unit: '每人预算', desc: '生鱼片店和海鲜汤集中；海边有《鬼怪》拍摄的防波堤。' },
+          { name: '安木海边咖啡街', time: '15:25', dur: 80, travel: 25, type: 'food', lat: 37.7695, lng: 128.947, cost: 9000, unit: '每人预算', desc: '一排面海落地窗咖啡店，坐窗边看东海。' },
+          { name: '江陵中央市场小吃', time: '17:10', dur: 60, travel: 25, type: 'food', lat: 37.7538, lng: 128.8993, cost: 12000, unit: '每人预算', desc: '炸鸡块、土豆丸子、糖饼，份量小可以多买几样。' },
+          { name: '入住江陵酒店', time: '18:35', dur: 40, travel: 0, type: 'hotel', lat: 37.7955, lng: 128.896, fixed: 1, desc: '住镜浦一带，晚上安静。' },
+          { name: '晚餐（红蟹／烤贝）', time: '19:20', dur: 90, travel: 0, type: 'food', lat: 37.7955, lng: 128.896, cost: 35000, unit: '每人预算', desc: '江陵红蟹按斤计价，先问清单价再点。' }
         ]
       }
     },
     {
-      id: 'd5', tab: '9/30', date: '9月30日 周三', start: 510,
-      title: '安塔利亚｜卡莱伊奇＋飞卡帕多奇亚',
-      route: '酒店 → 卡莱伊奇 → 哈德良门 → 罗马港 → AYT → ASR → 格雷梅',
-      note: '只在老城内活动，不去远距离瀑布。',
+      id: 'd5', tab: '9/30', date: '9月30日 周三', start: 450,
+      title: '庆州｜大陵苑＋瞻星台＋东宫与月池夜景',
+      route: '江陵 → 庆州 → 皇理团吉 → 大陵苑 → 瞻星台 → 庆州博物馆 → 东宫与月池',
+      note: '江陵到庆州坐市外巴士约 3.5 小时，班次不多，前一天确认时刻表。庆州景点集中在市区，步行+打车最省时间。',
       opts: {
         '主方案': [
-          { name: '早餐', time: '08:30', dur: 60, travel: 0, type: 'food', lat: 36.88439, lng: 30.7066, desc: '酒店附近解决。' },
-          { name: '卡莱伊奇老城', time: '09:30', dur: 80, travel: 5, type: 'spot', lat: 36.88439, lng: 30.7066, cost: 0, desc: '石板路、老房子、咖啡馆和海边小巷，免费。' },
-          { name: '哈德良门', time: '10:55', dur: 30, travel: 10, type: 'spot', lat: 36.885, lng: 30.713, cost: 0, desc: '古罗马城市入口，免费。' },
-          { name: '罗马港＋午餐', time: '11:35', dur: 90, travel: 10, type: 'food', lat: 36.884, lng: 30.704, desc: '看港口和地中海海景。' },
-          { name: '取行李→AYT机场', time: '13:30', dur: 90, travel: 10, type: 'transport', lat: 36.899, lng: 30.801, cost: 20, unit: '全车预算€', fixed: 1, desc: '提前叫车。' },
-          { name: 'PC4156｜AYT→ASR', time: '16:00', dur: 70, travel: 0, type: 'transport', lat: 38.77, lng: 35.495, fixed: 1, desc: '航班固定节点。' },
-          { name: 'ASR→格雷梅接送', time: '17:10', dur: 100, travel: 0, type: 'transport', lat: 38.77, lng: 35.495, cost: 15, unit: '每人预算€', fixed: 1, desc: '按航班号预订共享接送。' },
-          { name: '入住酒店', time: '20:00', dur: 30, travel: 0, type: 'hotel', lat: 38.64143, lng: 34.828757, fixed: 1, desc: '简单吃饭休息。' }
+          { name: '早餐＋退房', time: '07:30', dur: 50, travel: 10, type: 'hotel', lat: 37.7955, lng: 128.896, fixed: 1, desc: '退房后直接去江陵市外巴士客运站。' },
+          { name: '市外巴士 江陵 → 庆州', time: '08:40', dur: 210, travel: 10, type: 'transport', lat: 35.8355, lng: 129.213, cost: 23000, unit: '每人预算', fixed: 1, desc: '中途可能停靠，车上没有餐食，自带水和小食。' },
+          { name: '酒店寄存行李', time: '12:20', dur: 30, travel: 15, type: 'hotel', lat: 35.8346, lng: 129.2186, fixed: 1, desc: '住皇理团吉／大陵苑一带最方便。' },
+          { name: '皇理团吉午餐', time: '13:05', dur: 80, travel: 10, type: 'food', lat: 35.8360, lng: 129.21, cost: 16000, unit: '每人预算', desc: '韩屋改造的餐厅和甜品店一条街，排队店可跳过。' },
+          { name: '大陵苑＋天马冢', time: '14:35', dur: 70, travel: 10, type: 'spot', lat: 35.8375, lng: 129.209, cost: 3000, unit: '每人预算', desc: '新罗王陵群，草地和松林很好拍。' },
+          { name: '瞻星台', time: '15:55', dur: 40, travel: 15, type: 'spot', lat: 35.8346, lng: 129.2186, cost: 0, desc: '免费；韩国最古老的天文台，就在大陵苑东侧。' },
+          { name: '国立庆州博物馆', time: '16:50', dur: 60, travel: 15, type: 'spot', lat: 35.829, lng: 129.228, cost: 0, desc: '免费；看新罗金冠和雁鸭池出土文物，室内可以避晒。' },
+          { name: '晚餐（韩定食／烤肉）', time: '18:05', dur: 70, travel: 10, type: 'food', lat: 35.8346, lng: 129.2186, cost: 18000, unit: '每人预算', desc: '吃完正好等天黑看雁鸭池灯光。' },
+          { name: '东宫与月池（夜景）', time: '19:25', dur: 60, travel: 5, type: 'spot', lat: 35.8346, lng: 129.2267, cost: 3000, unit: '每人预算', desc: '日落后开灯，倒影最漂亮；闭园前 1 小时停止入场。' },
+          { name: '返回酒店', time: '20:35', dur: 20, travel: 0, type: 'hotel', lat: 35.8346, lng: 129.2186, fixed: 1, desc: '步行或打车 10 分钟内。' }
         ]
       }
     },
     {
-      id: 'd6', tab: '10/1', date: '10月1日 周四', start: 300,
-      title: '卡帕多奇亚｜热气球＋洞穴教堂＋日落',
-      route: '酒店 → 热气球 → 休息 → 格雷梅露天博物馆 → 红/玫瑰谷',
-      note: '热气球按当天SHM许可；取消时切换备选方案。',
+      id: 'd6', tab: '10/1', date: '10月1日 周四', start: 450,
+      title: '釜山｜佛国寺＋甘川洞＋南浦洞',
+      route: '庆州 → 佛国寺 → 新庆州站 → 釜山站 → 南浦洞 → 甘川洞 → 札嘎其 → 龙头山',
+      note: '佛国寺在庆州东南，顺路去新庆州站；不想早起就走“轻松方案”直接去釜山。',
       opts: {
         '主方案': [
-          { name: '热气球', time: '05:00', dur: 210, travel: 0, type: 'transport', lat: 38.642, lng: 34.827, cost: 240, unit: '每人预算€', fixed: 1, desc: '天气敏感；确认取消退款/改期。' },
-          { name: '早餐＋补觉', time: '08:30', dur: 150, travel: 0, type: 'hotel', lat: 38.64143, lng: 34.828757, fixed: 1, desc: '不要接着参加完整一日团。' },
-          { name: '午餐', time: '11:30', dur: 60, travel: 15, type: 'food', lat: 38.642, lng: 34.827, desc: '格雷梅中心顺路用餐。' },
-          { name: '格雷梅露天博物馆', time: '13:00', dur: 120, travel: 15, type: 'spot', lat: 38.643, lng: 34.846, cost: 20, unit: '每人预算€', desc: '岩窟教堂、修道院和壁画。' },
-          { name: '红谷/玫瑰谷短线', time: '15:30', dur: 70, travel: 20, type: 'spot', lat: 38.634, lng: 34.838, cost: 0, desc: '只走观景短线。' },
-          { name: '红谷日落＋晚餐', time: '17:00', dur: 120, travel: 10, type: 'food', lat: 38.627, lng: 34.846, desc: '日落后回格雷梅。' },
-          { name: '返回酒店', time: '19:10', dur: 30, travel: 0, type: 'hotel', lat: 38.64143, lng: 34.828757, fixed: 1, desc: '回酒店休息。' }
+          { name: '早餐＋退房', time: '07:30', dur: 60, travel: 10, type: 'hotel', lat: 35.8346, lng: 129.2186, fixed: 1, desc: '行李随身，今天不再回庆州。' },
+          { name: '佛国寺', time: '08:40', dur: 90, travel: 40, type: 'spot', lat: 35.79, lng: 129.332, cost: 6000, unit: '每人预算', desc: '世界文化遗产，石窟庵在同一方向但要多留 1 小时。' },
+          { name: 'KTX 新庆州 → 釜山', time: '11:10', dur: 35, travel: 20, type: 'transport', lat: 35.7983, lng: 129.1378, cost: 11000, unit: '每人预算', fixed: 1, desc: '约 30 分钟，班次密集；到釜山站转地铁 1 号线。' },
+          { name: '南浦洞酒店寄存', time: '12:05', dur: 30, travel: 20, type: 'hotel', lat: 35.0977, lng: 129.0303, fixed: 1, desc: '住在南浦洞／札嘎其一带，出门就是地铁和夜市。' },
+          { name: '南浦洞午餐（猪肉汤饭）', time: '12:55', dur: 60, travel: 15, type: 'food', lat: 35.0985, lng: 129.0295, cost: 12000, unit: '每人预算', desc: '釜山特色，配韭菜和虾酱一起下饭。' },
+          { name: '甘川洞文化村', time: '14:10', dur: 100, travel: 25, type: 'spot', lat: 35.0975, lng: 129.01, cost: 0, desc: '免费；村内坡道很陡，穿好走的鞋，地图在入口领。' },
+          { name: '札嘎其市场＋BIFF 广场', time: '16:15', dur: 90, travel: 15, type: 'food', lat: 35.0977, lng: 129.0303, cost: 20000, unit: '每人预算', desc: '二楼代客料理，先在一楼挑海鲜再上楼加工。' },
+          { name: '龙头山公园＋釜山塔夜景', time: '18:00', dur: 60, travel: 10, type: 'spot', lat: 35.1007, lng: 129.0326, cost: 0, desc: '公园免费；登塔观景台 ₩12,000，可只逛公园。' },
+          { name: '晚餐（烤五花／烤贝）', time: '19:10', dur: 80, travel: 0, type: 'food', lat: 35.0985, lng: 129.0295, cost: 25000, unit: '每人预算', desc: '南浦洞巷子里的小店，人均比海边便宜。' },
+          { name: '返回酒店', time: '20:30', dur: 20, travel: 0, type: 'hotel', lat: 35.0977, lng: 129.0303, fixed: 1, desc: '早点休息，明天海云台一整天。' }
         ],
-        '热气球取消': [
-          { name: '睡到自然醒＋早餐', time: '08:30', dur: 120, travel: 0, type: 'hotel', lat: 38.64143, lng: 34.828757, fixed: 1, desc: '先休息。' },
-          { name: '格雷梅露天博物馆', time: '11:00', dur: 120, travel: 15, type: 'spot', lat: 38.643, lng: 34.846, cost: 20, unit: '每人预算€', desc: '核心文化景点。' },
-          { name: '午餐＋咖啡', time: '13:15', dur: 90, travel: 15, type: 'food', lat: 38.642, lng: 34.827, desc: '观察天气。' },
-          { name: '红谷/玫瑰谷短线', time: '15:00', dur: 80, travel: 20, type: 'spot', lat: 38.634, lng: 34.838, cost: 0, desc: '天气差就删掉。' },
-          { name: '乌奇萨尔日落备选', time: '17:00', dur: 90, travel: 20, type: 'spot', lat: 38.63, lng: 34.799, cost: 0, desc: '根据10/2补飞决定是否保留。' }
+        '轻松方案': [
+          { name: '睡到自然醒＋早餐', time: '09:00', dur: 90, travel: 10, type: 'food', lat: 35.8346, lng: 129.2186, cost: 12000, unit: '每人预算', desc: '放弃佛国寺，把体力留给釜山。' },
+          { name: 'KTX 新庆州 → 釜山', time: '11:10', dur: 35, travel: 20, type: 'transport', lat: 35.7983, lng: 129.1378, cost: 11000, unit: '每人预算', fixed: 1, desc: '车票时间不变，只调整上午安排。' },
+          { name: '南浦洞酒店寄存', time: '12:05', dur: 30, travel: 20, type: 'hotel', lat: 35.0977, lng: 129.0303, fixed: 1, desc: '行李放好后直接出门。' },
+          { name: '南浦洞午餐（猪肉汤饭）', time: '12:55', dur: 70, travel: 15, type: 'food', lat: 35.0985, lng: 129.0295, cost: 12000, unit: '每人预算', desc: '慢慢吃，不用赶。' },
+          { name: '甘川洞文化村', time: '14:20', dur: 120, travel: 25, type: 'spot', lat: 35.0975, lng: 129.01, cost: 0, desc: '免费；多在村里坐一会儿，拍彩色屋顶。' },
+          { name: '札嘎其市场＋BIFF 广场', time: '16:45', dur: 90, travel: 15, type: 'food', lat: 35.0977, lng: 129.0303, cost: 20000, unit: '每人预算', desc: '海鲜晚餐提前吃。' },
+          { name: '龙头山公园夜景', time: '18:30', dur: 60, travel: 10, type: 'spot', lat: 35.1007, lng: 129.0326, cost: 0, desc: '免费；看港口灯光。' },
+          { name: '返回酒店', time: '19:40', dur: 20, travel: 0, type: 'hotel', lat: 35.0977, lng: 129.0303, fixed: 1, desc: '早点回去休息。' }
         ]
       }
     },
     {
       id: 'd7', tab: '10/2', date: '10月2日 周五', start: 480,
-      title: '卡帕多奇亚｜轻松北线＋飞回伊斯坦布尔',
-      route: '酒店寄存 → 乌奇萨尔 → 鸽子谷 → 阿瓦诺斯 → 帕夏巴格 → 代夫兰特 → ASR',
-      note: '默认轻松北线；也可切换绿线备选。',
+      title: '釜山｜海云台＋广安里＋太宗台',
+      route: '酒店 → 海云台 → 冬柏岛 → 广安里 → 太宗台 → 白浅滩文化村 → 南浦洞',
+      note: '这条线跨度大，四人直接打车／包车更省时间；下雨就切换室内方案。',
       opts: {
-        '轻松北线': [
-          { name: '早餐＋退房寄存', time: '08:00', dur: 90, travel: 0, type: 'hotel', lat: 38.644315, lng: 34.830193, fixed: 1, desc: '行李寄存在酒店。' },
-          { name: '乌奇萨尔观景台', time: '09:30', dur: 60, travel: 20, type: 'spot', lat: 38.63, lng: 34.799, cost: 0, desc: '岩石城堡和全景。' },
-          { name: '鸽子谷', time: '10:40', dur: 50, travel: 10, type: 'spot', lat: 38.634, lng: 34.807, cost: 0, desc: '与乌奇萨尔很近，同一段路线连续游玩。' },
-          { name: '阿瓦诺斯午餐＋陶艺', time: '12:00', dur: 120, travel: 25, type: 'food', lat: 38.715, lng: 34.847, desc: '陶艺小镇。' },
-          { name: '帕夏巴格', time: '14:20', dur: 60, travel: 25, type: 'spot', lat: 38.679, lng: 34.852, cost: 0, desc: '精灵烟囱岩柱。' },
-          { name: '代夫兰特谷', time: '15:30', dur: 45, travel: 10, type: 'spot', lat: 38.673, lng: 34.866, cost: 0, desc: '动物形状岩石。' },
-          { name: '取行李＋提前晚餐', time: '16:45', dur: 75, travel: 25, type: 'food', lat: 38.644315, lng: 34.830193, fixed: 1, desc: '尽量17:30前离开。' },
-          { name: '前往ASR机场', time: '18:00', dur: 100, travel: 0, type: 'transport', lat: 38.77, lng: 35.495, cost: 15, unit: '每人预算€', fixed: 1, desc: '提前订送机。' },
-          { name: 'TK2091｜ASR→IST', time: '22:50', dur: 85, travel: 0, type: 'transport', lat: 38.77, lng: 35.495, fixed: 1, desc: '航班固定节点。' }
+        '主方案': [
+          { name: '早餐＋出发', time: '08:00', dur: 50, travel: 30, type: 'food', lat: 35.0977, lng: 129.0303, cost: 8000, unit: '每人预算', desc: '地铁 2 号线到海云台，约 40 分钟。' },
+          { name: '海云台海水浴场＋冬柏岛', time: '09:20', dur: 90, travel: 30, type: 'spot', lat: 35.1587, lng: 129.1604, cost: 0, desc: '免费；沿海边步道走到冬柏岛，可以看到广安大桥。' },
+          { name: '海云台市场午餐', time: '11:20', dur: 70, travel: 25, type: 'food', lat: 35.1627, lng: 129.1633, cost: 20000, unit: '每人预算', desc: '盲鳗、海鲜葱饼；市场里按份卖，四个人点 3—4 样刚好。' },
+          { name: '广安里海水浴场', time: '12:55', dur: 70, travel: 35, type: 'spot', lat: 35.1531, lng: 129.1186, cost: 0, desc: '免费；白天看桥，晚上有灯光秀，时间够可以晚上再来。' },
+          { name: '太宗台＋影岛', time: '14:40', dur: 100, travel: 25, type: 'spot', lat: 35.0525, lng: 129.087, cost: 4000, unit: '每人预算', desc: '景区小火车 ₩4,000，海边悬崖步道风大。' },
+          { name: '白浅滩文化村', time: '16:45', dur: 70, travel: 20, type: 'spot', lat: 35.0778, lng: 129.045, cost: 0, desc: '免费；沿海台阶和小咖啡馆，日落时最出片。' },
+          { name: '晚餐（烤贝／烤五花）', time: '18:15', dur: 100, travel: 10, type: 'food', lat: 35.0977, lng: 129.0303, cost: 25000, unit: '每人预算', desc: '回南浦洞吃，选择多；今晚把行李收好。' },
+          { name: '返回酒店', time: '20:05', dur: 60, travel: 0, type: 'hotel', lat: 35.0977, lng: 129.0303, fixed: 1, desc: '收拾行李，确认明天值机和退税材料。' }
         ],
-        '绿线备选': [
-          { name: '早餐＋退房寄存', time: '07:30', dur: 60, travel: 0, type: 'hotel', lat: 38.644315, lng: 34.830193, fixed: 1, desc: '行李寄存。' },
-          { name: '地下城', time: '08:30', dur: 75, travel: 45, type: 'spot', lat: 38.373, lng: 34.734, cost: 25, unit: '每人预算€', desc: '多层地下空间，部分通道狭窄。' },
-          { name: '伊赫拉拉峡谷短线', time: '10:30', dur: 120, travel: 40, type: 'spot', lat: 38.251, lng: 34.305, cost: 0, desc: '溪流峡谷，步行量较大。' },
-          { name: '塞利梅修道院', time: '13:10', dur: 60, travel: 30, type: 'spot', lat: 38.257, lng: 34.305, cost: 0, desc: '岩窟修道院。' },
-          { name: '午餐＋回格雷梅', time: '14:30', dur: 120, travel: 150, type: 'food', lat: 38.642, lng: 34.827, desc: '必须确认17:00前返回。' },
-          { name: '取行李→ASR机场', time: '17:00', dur: 100, travel: 0, type: 'transport', lat: 38.77, lng: 35.495, cost: 15, unit: '每人预算€', fixed: 1, desc: '绿线延误就放弃剩余点。' },
-          { name: 'TK2091｜ASR→IST', time: '22:50', dur: 85, travel: 0, type: 'transport', lat: 38.77, lng: 35.495, fixed: 1, desc: '航班固定节点。' }
+        '雨天方案': [
+          { name: '早餐＋出发', time: '09:00', dur: 60, travel: 25, type: 'food', lat: 35.0977, lng: 129.0303, cost: 8000, unit: '每人预算', desc: '下雨就把海边行程全部换掉。' },
+          { name: 'SEA LIFE 釜山水族馆', time: '10:15', dur: 120, travel: 20, type: 'spot', lat: 35.1595, lng: 129.1609, cost: 29000, unit: '每人预算', desc: '室内水族馆，海云台沙滩旁；网上购票更便宜。' },
+          { name: '海云台市场午餐', time: '12:35', dur: 70, travel: 20, type: 'food', lat: 35.1627, lng: 129.1633, cost: 18000, unit: '每人预算', desc: '有顶棚的市场，雨天也能逛。' },
+          { name: '新世界 Centum City 免税店', time: '14:10', dur: 120, travel: 20, type: 'spot', lat: 35.169, lng: 129.13, cost: 0, desc: '免费；吉尼斯纪录最大百货，室内逛街避雨。' },
+          { name: '咖啡＋休息', time: '16:20', dur: 50, travel: 10, type: 'food', lat: 35.169, lng: 129.13, cost: 9000, unit: '每人预算', desc: '等雨小一点再走。' },
+          { name: '南浦洞地下商街', time: '17:30', dur: 80, travel: 25, type: 'spot', lat: 35.099, lng: 129.0285, cost: 0, desc: '免费；地下商街连着地铁站，全程不用打伞。' },
+          { name: '晚餐（烤贝／烤五花）', time: '19:00', dur: 100, travel: 0, type: 'food', lat: 35.0977, lng: 129.0303, cost: 25000, unit: '每人预算', desc: '回酒店附近吃。' },
+          { name: '返回酒店', time: '20:45', dur: 45, travel: 0, type: 'hotel', lat: 35.0977, lng: 129.0303, fixed: 1, desc: '收拾行李，早点睡。' }
         ]
       }
     },
     {
-      id: 'd8', tab: '10/3', date: '10月3日 周六', start: 540,
-      title: '机场休息＋返程',
-      route: '酒店 → IST → 北京',
-      note: '不进市区，保留国际航班缓冲。',
+      id: 'd8', tab: '10/3', date: '10月3日 周六', start: 420,
+      title: '返程｜金海机场 → 北京',
+      route: '酒店 → 金海机场 → 北京首都机场',
+      note: '国际航班建议提前 2 小时到；退税在值机前的自助机办理，盖章后再托运。',
       opts: {
         '主方案': [
-          { name: '早餐＋小镇闲逛', time: '09:00', dur: 120, travel: 0, type: 'hotel', lat: 41.192627, lng: 28.732381, fixed: 1, desc: '睡够再出发。' },
-          { name: '前往IST机场', time: '11:30', dur: 45, travel: 0, type: 'transport', lat: 41.275, lng: 28.752, cost: 10, unit: '全车预算€', fixed: 1, desc: '酒店到机场。' },
-          { name: 'CA860｜IST→北京', time: '14:55', dur: 865, travel: 0, type: 'transport', lat: 41.275, lng: 28.752, fixed: 1, desc: '订单截图显示预计抵达04:33、计划抵达05:20（次日）；以航空公司当天信息为准。' }
+          { name: '早餐＋退房', time: '07:00', dur: 60, travel: 0, type: 'hotel', lat: 35.0977, lng: 129.0303, fixed: 1, desc: '确认护照、退税单和充电宝都在随身包里。' },
+          { name: '打车 → 金海机场', time: '08:40', dur: 50, travel: 0, type: 'transport', lat: 35.1795, lng: 129.0756, cost: 25000, unit: '全车预算', fixed: 1, desc: '南浦洞打车约 35 分钟；地铁+轻轨约 50 分钟，四人打车更划算。' },
+          { name: '退税＋值机＋托运', time: '09:40', dur: 120, travel: 0, type: 'transport', lat: 35.1795, lng: 129.0756, fixed: 1, desc: '先在出发层自助退税机扫描，再去柜台托运。' },
+          { name: '金海 PUS → 北京首都 PEK', time: '12:30', dur: 140, travel: 0, type: 'transport', lat: 35.1795, lng: 129.0756, fixed: 1, desc: '预计 13:50 抵达北京（韩国比北京快 1 小时）；直飞航班以实际预订为准。' }
         ]
       }
     }
   ],
   alternatives: {
-    d1: [['香料市场', '埃及香料、坚果和伴手礼集市', 41.016, 28.97], ['圣索菲亚', '排队短时可入内参观', 41.009, 28.98], ['地下水宫', '地下蓄水池，适合雨天', 41.008, 28.977], ['苏莱曼尼耶清真寺', '老城高处全景和清真寺庭院', 41.016, 28.964]],
-    d2: [['地下水宫', '室内地下蓄水池，适合短时间参观', 41.008, 28.977], ['大巴扎', '周日通常关闭，不建议安排', 41.011, 28.968], ['托普卡帕宫', '宫殿与帝国收藏，时间充足才去', 41.011, 28.984], ['古尔哈内公园', '老城内的绿地，适合散步休息', 41.013, 28.981]],
-    d3: [['厄吕代尼兹', '蓝色泻湖和海滩，建议另留半天', 36.549, 29.115], ['蝴蝶谷', '海湾和步道，与跳岛游性质相近', 36.5, 29.124], ['费特希耶鱼市', '晚餐和海鲜小店集中', 36.621, 29.116], ['Kayaköy希腊村', '山谷中的废弃石屋村落', 36.576, 29.082]],
-    d4: [['卡尔坎老城', '海边小镇，适合咖啡和拍照', 36.266, 29.414], ['帕塔拉古城', '热门古城，但会明显拉长当天车程', 36.264, 29.313], ['Kekova沉船城', '需单独半天至一天出海', 36.185, 29.845], ['萨克利肯特峡谷', '需要额外往返，不建议硬塞进D400', 36.452, 29.4]],
-    d5: [['杜顿瀑布', '安塔利亚海岸瀑布，需额外往返', 36.834, 30.787], ['安塔利亚考古博物馆', '室内博物馆，适合早到时加入', 36.889, 30.696], ['海湾观景台', '卡莱伊奇外沿海景，免费', 36.884, 30.704]],
-    d6: [['乌奇萨尔', '岩石城堡和全景，可替代红谷', 38.63, 34.799], ['阿瓦诺斯', '陶艺小镇，适合天气不佳时', 38.715, 34.847], ['爱情谷', '奇岩地貌和轻徒步', 38.659, 34.846], ['泽尔维露天博物馆', '洞穴聚落，适合替代露天博物馆', 38.675, 34.854]],
-    d7: [['地下城', '南线历史景点，通道较狭窄', 38.373, 34.734], ['伊赫拉拉峡谷', '需要徒步，体力和天气好再加入', 38.251, 34.305], ['塞利梅修道院', '岩窟修道院，和峡谷同方向', 38.257, 34.305], ['代林库尤地下城', '规模更大但路程更远', 38.375, 34.734]]
+    d1: [['明洞圣堂', '哥特式红砖教堂，离明洞步行 5 分钟', 37.5633, 126.9873], ['南山谷韩屋村', '免费的传统韩屋院落，适合拍照', 37.5595, 126.9945], ['清溪川', '市中心人工溪流，夜晚灯光好', 37.5696, 126.9784], ['东大门夜市', '深夜小吃和批发市场', 37.5704, 127.0098]],
+    d2: [['昌德宫＋后苑', '世界文化遗产，后苑需另预约', 37.5794, 126.991], ['昌庆宫', '人少安静，和昌德宫相连', 37.5716, 126.995], ['宗庙', '朝鲜王朝祭祀建筑，需导览陪同', 37.5746, 126.994], ['益善洞韩屋咖啡街', '窄巷里的韩屋改造咖啡店', 37.5735, 126.99]],
+    d3: [['梨花洞壁画村', '山坡上的壁画小巷，步行量大', 37.5806, 127.005], ['首尔路7017', '旧高架改成的空中步道', 37.5561, 126.972], ['汝矣岛 63 大厦', '观景台看汉江全景', 37.5199, 126.94], ['望远市场', '本地人市场，小吃便宜', 37.5562, 126.9066]],
+    d4: [['乌竹轩', '申师任堂故居，市区内顺路', 37.7695, 128.897], ['正东津日出公园', '海边火车站，看日出要早起', 37.6907, 129.032], ['三陟幻仙窟', '石灰岩洞窟，车程较远', 37.404, 129.081], ['束草雪岳山', '缆车＋山景，需单独一整天', 38.174, 128.465]],
+    d5: [['佛国寺', '世界文化遗产，和石窟庵同方向', 35.79, 129.332], ['石窟庵', '山中的石佛造像，需另加 1 小时', 35.795, 129.349], ['月精桥', '新罗桥梁复原，夜景灯光', 35.833, 129.216], ['雁鸭池', '即东宫与月池，日落后最美', 35.8346, 129.2267]],
+    d6: [['海东龙宫寺', '建在海崖上的寺庙', 35.188, 129.223], ['广安里海水浴场', '沙滩＋广安大桥夜景', 35.1531, 129.1186], ['太宗台', '影岛海崖，小火车代步', 35.0525, 129.087], ['西面地下商街', '购物和换钱都方便', 35.157, 129.059]],
+    d7: [['海东龙宫寺', '海崖寺庙，顺路可加进行程', 35.188, 129.223], ['松岛天空步道＋缆车', '海上步道，天气好才值得', 35.063, 129.018], ['多大浦夕阳喷泉', '夏季夜间音乐喷泉', 35.048, 128.966], ['新世界 Centum City', '室内购物，雨天备选', 35.169, 129.13]],
+    d8: [['白浅滩文化村', '早起可去拍海边日出', 35.0778, 129.045], ['甘川洞文化村', '早上去人少，注意时间', 35.0975, 129.01], ['札嘎其市场', '买干货伴手礼', 35.0977, 129.0303]]
   }
 };

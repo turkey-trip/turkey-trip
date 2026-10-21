@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  var LS_KEY = 'turkey-trip-v2';
+  var LS_KEY = 'korea-trip-v1';
   var state = {
     data: null,
     selected: 'overview',
@@ -12,12 +12,11 @@
   };
 
   var HOTELS = [
-    [41.009253, 28.949279, 'Hampton by Hilton Istanbul Old City, Sorguccu Str No 1, Istanbul'],
-    [36.54933, 29.115, 'The Tulip Houses, 152 Sk No 4, Oludeniz, Fethiye'],
-    [36.88439, 30.7066, 'Atelya Art Hotel, Barbaros Civelek Sokak No 21, Antalya'],
-    [38.64143, 34.828757, "Noah's Ark Cave Hotel, Isali Cd No 16, Goreme"],
-    [38.644315, 34.830193, 'Olivia Cave Hotel, Saglik Sokak No 6/A, Goreme'],
-    [41.192627, 28.732381, 'GNC Airport Hotel, Mustafa Kemal Pasa Fatih Cd No 171, Arnavutkoy']
+    [37.5636, 126.9834, 'Myeongdong, Jung-gu, Seoul, South Korea'],
+    [37.7955, 128.896, 'Gyeongpo-dong, Gangneung-si, Gangwon-do, South Korea'],
+    [35.8346, 129.2186, 'Hwangnam-dong, Gyeongju-si, Gyeongsangbuk-do, South Korea'],
+    [35.0977, 129.0303, 'Nampo-dong, Jung-gu, Busan, South Korea'],
+    [35.1795, 129.0756, 'Gimhae International Airport, Busan, South Korea']
   ];
 
   /* ---------------- 工具 ---------------- */
@@ -125,42 +124,81 @@
     });
   }
   var CUR = {
-    EUR: { sym: '€', name: '欧元' },
-    TRY: { sym: '₺', name: '里拉' },
+    KRW: { sym: '₩', name: '韩元' },
     CNY: { sym: '¥', name: '人民币' },
-    USD: { sym: '$', name: '美元' }
+    USD: { sym: '$', name: '美元' },
+    EUR: { sym: '€', name: '欧元' }
   };
-  var CUR_KEYS = ['EUR', 'TRY', 'CNY', 'USD'];
+  var CUR_KEYS = ['KRW', 'CNY', 'USD', 'EUR'];
+
+  /* rates[c] = 1 单位 c 折合多少本币（本币恒为 1） */
+  var DEFAULT_RATES = { KRW: 1, CNY: 196, USD: 1395, EUR: 1520 };
 
   function rateMap() {
     var r = state.data.meta.rates || {};
-    return { EUR: 1, TRY: r.try || 56, CNY: r.cny || 7.7, USD: r.usd || 1.08 };
+    var m = {};
+    CUR_KEYS.forEach(function (k) {
+      var v = +r[k];
+      if (isFinite(v) && v > 0) m[k] = v;
+    });
+    CUR_KEYS.forEach(function (k) {
+      if (!(k in m)) m[k] = DEFAULT_RATES[k];
+    });
+    m[baseCur()] = 1;
+    return m;
+  }
+  /* 兼容旧版本数据：rates 语义统一为「1 单位该货币 = ? 本币」 */
+  function migrateRates() {
+    var m = state.data.meta;
+    var r = m.rates || {};
+    if (r.try != null || r.cny != null || r.usd != null) {
+      var eurPer = { EUR: 1, TRY: +r.try || 56, CNY: +r.cny || 7.7, USD: +r.usd || 1.08 };
+      var old = {};
+      CUR_KEYS.forEach(function (k) { old[k] = 1 / (eurPer[k] || 1); });
+      r = old;
+    }
+    m.rates = r;
+    var base = m.baseCurrency || 'KRW';
+    CUR_KEYS.forEach(function (k) {
+      var v = +r[k];
+      if (!isFinite(v) || v <= 0) r[k] = DEFAULT_RATES[k];
+    });
+    var bRate = +r[base] || 1;
+    CUR_KEYS.forEach(function (k) { r[k] = r[k] / bRate; });
+    r[base] = 1;
   }
   function convert(v, from, to) {
     var m = rateMap();
     if (!m[from] || !m[to]) return null;
-    return v / m[from] * m[to];
+    return v * m[from] / m[to];
   }
-  function curSym(c) { return (CUR[c] || CUR.EUR).sym; }
+  function curSym(c) { return (CUR[c] || CUR.KRW).sym; }
   function curOptions(allowNone) {
     var arr = CUR_KEYS.map(function (k) { return { value: k, text: CUR[k].sym + ' ' + CUR[k].name }; });
     if (allowNone) arr.unshift({ value: '', text: '不换算' });
     return arr;
   }
-  function baseCur() { return state.data.meta.baseCurrency || 'EUR'; }
-  function targets() { return state.data.meta.targets || ['TRY', 'CNY']; }
+  function baseCur() { return state.data.meta.baseCurrency || 'KRW'; }
+  function targets() { return state.data.meta.targets || ['CNY']; }
   function fmtRate(n) {
-    if (n == null) return '-';
-    if (n >= 100) return String(Math.round(n));
-    if (n >= 10) return n.toFixed(1);
-    return n.toFixed(2);
+    if (n == null || !isFinite(n)) return '-';
+    var a = Math.abs(n);
+    if (a >= 100) return String(Math.round(n));
+    if (a >= 1) return String(Math.round(n * 10) / 10);
+    if (a >= 0.1) return String(Math.round(n * 100) / 100);
+    return String(Math.round(n * 1000) / 1000);
+  }
+  function amt(n) {
+    var s = String(n);
+    if (!/^\d{4,}$/.test(s)) return s;
+    return s.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
   }
   function price(v, cur) {
     if (v == null || v === '') return '';
     var n = +v;
     if (n === 0) return '免费';
     cur = cur || baseCur();
-    var parts = [curSym(cur) + n];
+    var parts = [curSym(cur) + amt(n)];
     targets().forEach(function (c) {
       if (!c || c === cur) return;
       var x = convert(n, cur, c);
@@ -183,7 +221,7 @@
       if (box) box.innerHTML = '<div class="map-fallback">地图资源未加载，行程与导航链接不受影响</div>';
       return;
     }
-    map = L.map('map', { scrollWheelZoom: false }).setView([39.2, 32.5], 6);
+    map = L.map('map', { scrollWheelZoom: false }).setView([36.6, 127.9], 7);
     layerGroup = L.layerGroup().addTo(map);
     useTile(0, 0);
   }
@@ -211,7 +249,7 @@
       mk.bindPopup('<b>' + (i + 1) + '. ' + escapeHtml(x.name) + '</b><br>' + (x.begin || '') + '<br>' + escapeHtml(x.desc || ''));
       pts.push([+x.lat, +x.lng]);
     });
-    if (pts.length > 1) L.polyline(pts, { color: '#a855f7', weight: 4, opacity: .5, dashArray: '7 8' }).addTo(layerGroup);
+    if (pts.length > 1) L.polyline(pts, { color: '#3b5bdb', weight: 4, opacity: .5, dashArray: '7 8' }).addTo(layerGroup);
     if (pts.length) map.fitBounds(pts, { padding: [25, 25], maxZoom: 13 });
   }
   function escapeHtml(s) {
@@ -228,9 +266,9 @@
     var parts = [];
     targets().forEach(function (c) {
       if (!c || c === b) return;
-      parts.push(curSym(c) + fmtRate(convert(1, b, c)));
+      parts.push(curSym(c) + '1 ≈ ' + curSym(b) + fmtRate(convert(1, c, b)));
     });
-    $('#statRates').textContent = curSym(b) + '1 ≈ ' + (parts.length ? parts.join(' / ') : '同本币');
+    $('#statRates').textContent = parts.length ? parts.join(' / ') : '本币 ₩ 韩元';
     $('#heroTitle').textContent = m.title || '';
     $('#heroSub').textContent = m.subtitle || '';
   }
@@ -403,7 +441,7 @@
 
     var chips = el('div', 'chips');
     if (x.cost != null && x.cost !== '') {
-      var unitTxt = String(x.unit || '').replace(/[€₺¥$]/g, '').trim();
+      var unitTxt = String(x.unit || '').replace(/[€₺₩¥$]/g, '').trim();
       var ch = el('span', 'chip price', price(x.cost, x.currency) + (unitTxt ? ' · ' + unitTxt : ''));
       chips.appendChild(ch);
     }
@@ -586,7 +624,7 @@
         { key: 'cost', label: '费用（0 表示免费）', type: 'number', value: x.cost == null ? '' : x.cost, min: 0 },
         { key: 'currency', label: '币种', type: 'select', value: x.currency || baseCur(), options: curOptions() }
       ] },
-      { key: 'unit', label: '费用单位（如：每人预算 / 全车预算）', value: String(x.unit || '').replace(/[€₺¥$]/g, '').trim() },
+      { key: 'unit', label: '费用单位（如：每人预算 / 全车预算）', value: String(x.unit || '').replace(/[€₺₩¥$]/g, '').trim() },
       { key: 'desc', label: '说明', type: 'textarea', value: x.desc || '' },
       { type: 'group', fields: [
         { key: 'lat', label: '纬度', type: 'number', step: '0.000001', value: x.lat == null ? '' : x.lat },
@@ -607,7 +645,7 @@
             lat: v.lat === '' ? '' : +v.lat,
             lng: v.lng === '' ? '' : +v.lng,
             cost: v.cost === '' ? null : +v.cost,
-            currency: v.currency || 'EUR',
+            currency: v.currency || baseCur(),
             unit: v.unit || '',
             desc: v.desc || '',
             fixed: x.fixed ? 1 : 0
@@ -663,25 +701,31 @@
   function openSettings() {
     var m = state.data.meta;
     var tg = targets();
-    openSheet('页面设置', [
+    var rm = rateMap();
+    var bc = baseCur();
+    var fields = [
       { key: 'title', label: '大标题', value: m.title || '' },
       { key: 'subtitle', label: '副标题（日期与路线）', value: m.subtitle || '' },
       { key: 'people', label: '人数', type: 'number', value: m.people || 4, min: 1 },
-      { key: 'baseCurrency', label: '本币（费用默认按它录入）', type: 'select', value: baseCur(), options: curOptions() },
+      { key: 'baseCurrency', label: '本币（费用默认按它录入）', type: 'select', value: bc, options: curOptions() },
       { type: 'group', fields: [
         { key: 't1', label: '换算成', type: 'select', value: tg[0] || '', options: curOptions(true) },
         { key: 't2', label: '换算成', type: 'select', value: tg[1] || '', options: curOptions(true) }
       ] },
-      { key: 't3', label: '换算成（第三个，可留空）', type: 'select', value: tg[2] || '', options: curOptions(true) },
-      { type: 'group', fields: [
-        { key: 'rateTry', label: '汇率 €1 = ? ₺', type: 'number', step: '0.01', value: m.rates.try },
-        { key: 'rateCny', label: '汇率 €1 = ? ¥', type: 'number', step: '0.01', value: m.rates.cny }
-      ] },
-      { key: 'rateUsd', label: '汇率 €1 = ? $', type: 'number', step: '0.01', value: m.rates.usd || 1.08 }
-    ], [
+      { key: 't3', label: '换算成（第三个，可留空）', type: 'select', value: tg[2] || '', options: curOptions(true) }
+    ];
+    CUR_KEYS.forEach(function (k) {
+      if (k === bc) return;
+      fields.push({
+        key: 'rate_' + k,
+        label: '汇率 1' + curSym(k) + '（' + CUR[k].name + '）= ?' + curSym(bc),
+        type: 'number', step: '0.01', value: rm[k]
+      });
+    });
+    openSheet('页面设置', fields, [
       {
         text: '恢复默认', kind: 'danger', onClick: function () {
-          if (!confirm('恢复成初始的土耳其行程？你改的内容会丢失。')) return;
+          if (!confirm('恢复成初始的韩国行程？你改的内容会丢失。')) return;
           state.data = clone(window.SEED);
           state.choice = {};
           state.selected = 'overview';
@@ -693,12 +737,30 @@
       {
         text: '保存', kind: 'primary', onClick: function () {
           var v = readSheet();
+          var oldBase = m.baseCurrency || 'KRW';
+          var oldMap = rateMap();
+          var newBase = v.baseCurrency || 'KRW';
+          // 输入框里的汇率都以旧本币为基准；先收集，再统一折算到新本币
+          var raw = {};
+          raw[oldBase] = 1;
+          CUR_KEYS.forEach(function (k) {
+            if (k === oldBase) return;
+            var n = +v['rate_' + k];
+            raw[k] = isFinite(n) && n > 0 ? n : oldMap[k];
+          });
+          if (!raw[newBase]) raw[newBase] = oldMap[newBase] || 1;
+          var nr = {};
+          CUR_KEYS.forEach(function (k) {
+            var x = raw[k] / raw[newBase];
+            nr[k] = isFinite(x) && x > 0 ? x : DEFAULT_RATES[k];
+          });
+          nr[newBase] = 1;
           m.title = v.title.trim() || m.title;
           m.subtitle = v.subtitle;
           m.people = +v.people || 4;
-          m.baseCurrency = v.baseCurrency || 'EUR';
+          m.baseCurrency = newBase;
           m.targets = [v.t1, v.t2, v.t3].filter(function (x) { return !!x; });
-          m.rates = { try: +v.rateTry || 56, cny: +v.rateCny || 7.7, usd: +v.rateUsd || 1.08 };
+          m.rates = nr;
           document.title = m.title;
           $('#heroTitle').textContent = m.title;
           $('#heroSub').textContent = m.subtitle;
@@ -773,11 +835,19 @@
 
   function refreshRates() {
     setSync('获取汇率…', 'busy');
-    fetch('https://api.frankfurter.app/latest?from=EUR&to=TRY,CNY,USD')
+    var b = baseCur();
+    fetch('https://open.er-api.com/v6/latest/KRW')
       .then(function (r) { return r.json(); })
-      .then(function (r) {
-        if (!r || !r.rates) throw new Error('bad');
-        state.data.meta.rates = { try: r.rates.TRY, cny: r.rates.CNY, usd: r.rates.USD || 1.08 };
+      .then(function (j) {
+        if (!j || !j.rates || !j.rates[b]) throw new Error('bad');
+        var perBase = +j.rates[b];        // 1 KRW 折合多少本币
+        var nr = {};
+        CUR_KEYS.forEach(function (k) {
+          var per = +j.rates[k];          // 1 KRW 折合多少 k
+          if (per > 0) nr[k] = +(perBase / per).toFixed(4);
+        });
+        nr[b] = 1;
+        state.data.meta.rates = nr;
         save(); render();
         toast('汇率已更新');
       })
@@ -894,17 +964,17 @@
   function boot() {
     state.data = loadDoc();
     if (!state.data.meta) state.data.meta = clone(window.SEED.meta);
-    if (!state.data.meta.rates) state.data.meta.rates = { try: 56, cny: 7.7, usd: 1.08 };
-    if (!state.data.meta.rates.usd) state.data.meta.rates.usd = 1.08;
-    if (!state.data.meta.baseCurrency) state.data.meta.baseCurrency = 'EUR';
-    if (!state.data.meta.targets || !state.data.meta.targets.length) state.data.meta.targets = ['TRY', 'CNY'];
+    if (!state.data.meta.rates) state.data.meta.rates = clone(DEFAULT_RATES);
+    if (!state.data.meta.baseCurrency) state.data.meta.baseCurrency = 'KRW';
+    if (!state.data.meta.targets || !state.data.meta.targets.length) state.data.meta.targets = ['CNY'];
+    migrateRates();
 
-    // 老数据没有币种字段：补成欧元，避免切换本币后历史金额被误读
+    // 老数据没有币种字段：补成本币，避免切换本币后历史金额被误读
     var migrated = false;
     state.data.days.forEach(function (day) {
       Object.keys(day.opts).forEach(function (k) {
         day.opts[k].forEach(function (it) {
-          if (!it.currency && it.cost != null && it.cost !== '') { it.currency = 'EUR'; migrated = true; }
+          if (!it.currency && it.cost != null && it.cost !== '') { it.currency = baseCur(); migrated = true; }
         });
       });
     });
